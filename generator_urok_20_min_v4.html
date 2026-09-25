@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3 маршрута: урок за 20 минут</title>
+<style>
+:root{
+  --ink:#18303a;
+  --dark:#10495a;
+  --aqua:#70b8c8;
+  --mist:#91acc7;
+  --paper:#ffffff;
+  --soft:#f4f8fa;
+  --line:#dce7eb;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--soft);color:var(--ink)}
+button,input,textarea{font:inherit}
+.app{max-width:1180px;margin:auto;min-height:100vh;background:var(--paper)}
+header{padding:24px 34px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.brand{font-weight:800}.pill{border:1.5px solid var(--ink);border-radius:999px;padding:10px 18px}
+main{padding:42px 34px 64px}
+h1{font-size:clamp(38px,6vw,72px);line-height:.98;margin:14px 0 18px;letter-spacing:-2px}
+h2{font-size:36px;margin:0 0 14px} h3{font-size:23px;margin:0 0 10px}
+.lead{font-size:21px;line-height:1.45;color:#607d8d;max-width:820px}
+.hero{padding:36px;border-radius:34px;background:var(--dark);color:white;margin-bottom:30px}
+.hero .lead{color:#dbeaf0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{border-radius:28px;padding:26px;background:var(--aqua);min-height:230px;display:flex;flex-direction:column}
+.card:nth-child(2){background:var(--mist)} .card:nth-child(3){background:var(--dark);color:white}
+.card .num{font-size:54px;font-weight:900;opacity:.95}.card p{font-size:18px;line-height:1.35;flex:1}
+.btn{border:0;border-radius:999px;padding:13px 18px;font-weight:800;cursor:pointer;background:var(--dark);color:white}
+.card:nth-child(3) .btn{background:white;color:var(--dark)}
+.btn.secondary{background:var(--aqua);color:white}.service-link{display:inline-block;text-decoration:none;margin:4px 8px 8px 0}.btn.ghost{background:white;color:var(--dark);border:1px solid var(--line)}
+.screen{display:none}.screen.active{display:block}
+.topline{display:flex;align-items:center;gap:12px;margin-bottom:18px}.step{background:var(--aqua);color:white;font-weight:900;padding:10px 18px;border-radius:999px}
+.route{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin:22px 0}
+.node{background:var(--soft);border:1px solid var(--line);border-radius:22px;padding:16px;min-width:180px;flex:1}
+.arrow{display:flex;align-items:center;font-weight:900;color:var(--aqua)}
+.panel{border-radius:28px;padding:26px;background:var(--soft);margin:18px 0}
+.panel.dark{background:var(--dark);color:white}.panel.aqua{background:var(--aqua);color:white}.panel.mist{background:var(--mist);color:white}
+label{display:block;font-weight:800;margin:12px 0 6px}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:15px;padding:12px 14px;background:white;color:var(--ink)}
+textarea{min-height:110px;resize:vertical}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.prompt{white-space:pre-wrap;background:white;color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:20px;line-height:1.45;max-height:480px;overflow:auto}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.transfer{font-weight:900;text-align:center;padding:16px;color:var(--dark);font-size:18px}
+.stop{border:3px solid var(--mist);background:white}
+.small{font-size:14px;color:#66818f}.dark .small{color:#dbeaf0}
+.back{margin-bottom:22px}
+@media(max-width:760px){main{padding:26px 18px 50px}header{padding:18px}.grid,.formgrid{grid-template-columns:1fr}.route{display:block}.arrow{justify-content:center;padding:8px;transform:rotate(90deg)}h2{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand">Урок за 20 минут</div><div class="pill">практический генератор</div></header>
+<main>
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="step">3 маршрута</div>
+    <h1>От задачи до готового материала</h1>
+    <p class="lead">Выберите ситуацию. Генератор покажет, какой сервис открыть, что перенести дальше и даст готовый промпт с вашими данными.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="num">01</div><h3>Исследования → урок</h3><p>Добавить в урок свежие исследования, статистику и реальные данные.</p><button class="btn" onclick="openRoute(1)">Открыть маршрут</button></div>
+    <div class="card"><div class="num">02</div><h3>Видео → урок</h3><p>Найти подходящее видео и превратить его содержание в готовый комплект к уроку.</p><button class="btn" onclick="openRoute(2)">Открыть маршрут</button></div>
+    <div class="card"><div class="num">03</div><h3>Материал → викторина</h3><p>Превратить PDF, презентацию, параграф или конспект в интерактивную HTML-викторину.</p><button class="btn" onclick="openRoute(3)">Открыть маршрут</button></div>
+  </div>
+  <div class="panel" style="margin-top:22px"><b>Бонус:</b> после маршрутов 1 и 2 готовый урок можно превратить в интерактивную презентацию в Curipod.</div>
+</section>
+
+<section id="route1" class="screen">
+<button class="btn ghost back" onclick="home()">← К маршрутам</button>
+<div class="topline"><span class="step">Маршрут 01</span></div>
+<h2>Свежие исследования → готовый урок</h2>
+<div class="route"><div class="node"><b>Perplexity</b><br>находим исследования</div><div class="arrow">→ файл →</div><div class="node"><b>Qwen / ChatGPT</b><br>собираем готовый урок</div><div class="arrow">→</div><div class="node"><b>Готово</b><br>план + материалы + ключи</div></div>
+<div id="form1"></div>
+<div class="panel aqua"><h3>Шаг 1. Perplexity — найдите исследования</h3><p><b>Perplexity</b> — ИИ-поисковик, который ищет информацию в интернете и показывает источники. Здесь он нужен, чтобы быстро собрать исследования, статистику и реальные примеры по теме урока.</p><p>Заполните паспорт выше. Промпт соберется автоматически.</p><a class="btn service-link" href="https://www.perplexity.ai/" target="_blank" rel="noopener">Открыть Perplexity ↗</a><div id="p1a" class="prompt"></div><div class="actions"><button class="btn" onclick="copyText('p1a')">Скопировать промпт</button></div></div>
+<div class="transfer">↓ Скачайте результат Perplexity и прикрепите файл в Qwen / ChatGPT ↓</div>
+<div class="panel"><h3>Шаг 2. Qwen / ChatGPT — соберите готовый урок</h3><p><b>Qwen / ChatGPT</b> здесь работают как методист: прикрепите скачанный файл из Perplexity, затем скопируйте и отправьте промпт ниже.</p><a class="btn service-link" href="https://chat.qwen.ai/" target="_blank" rel="noopener">Открыть Qwen ↗</a><a class="btn service-link" href="https://chatgpt.com/" target="_blank" rel="noopener">Открыть ChatGPT ↗</a><div id="p1b" class="prompt"></div><div class="actions"><button class="btn" onclick="copyText('p1b')">Скопировать промпт</button></div></div>
+<div class="panel dark"><h3>Готовый комплект</h3><p>План учителя + материалы ученика + ключи + проверка понимания + чек-лист подготовки.</p><button class="btn secondary" onclick="showBonus(1)">Бонус: сделать презентацию в Curipod</button></div>
+<div id="bonus1"></div>
+</section>
+
+<section id="route2" class="screen">
+<button class="btn ghost back" onclick="home()">← К маршрутам</button>
+<div class="topline"><span class="step">Маршрут 02</span></div>
+<h2>Видео → готовый урок</h2>
+<div class="route"><div class="node"><b>Perplexity</b><br>находим видео</div><div class="arrow">→ ссылка →</div><div class="node"><b>YouLearn</b><br>получаем резюме</div><div class="arrow">→ резюме →</div><div class="node"><b>Qwen / ChatGPT</b><br>собираем урок</div></div>
+<div id="form2"></div>
+<div class="panel aqua"><h3>Шаг 1. Perplexity — найдите видео</h3><p><b>Perplexity</b> — ИИ-поисковик. Здесь он поможет найти несколько реальных видео под тему, возраст, язык и цель урока.</p><a class="btn service-link" href="https://www.perplexity.ai/" target="_blank" rel="noopener">Открыть Perplexity ↗</a><div id="p2a" class="prompt"></div><div class="actions"><button class="btn" onclick="copyText('p2a')">Скопировать промпт</button></div></div>
+<div class="panel stop"><h3>Стоп. Проверьте видео</h3><p>Содержание · язык · сложность · продолжительность · подходит ли вашим ученикам.</p></div>
+<div class="transfer">↓ Скопируйте ссылку на выбранное видео ↓</div>
+<div class="panel mist"><h3>Шаг 2. YouLearn — получите резюме видео</h3><p><b>YouLearn</b> — сервис для работы с учебными материалами. Он умеет создавать резюме, заметки, викторины, флеш-карты и другие форматы на основе добавленного материала. В этой цепочке нам нужна функция <b>«Резюме»</b>.</p><a class="btn service-link" href="https://youlearn.ai/" target="_blank" rel="noopener">Открыть YouLearn ↗</a><p><b>Что сделать:</b> Добавить материал → По ссылке → вставить ссылку на видео → Резюме → Скопировать.</p><p class="small">Здесь отдельный промпт не нужен.</p></div>
+<div class="transfer">↓ Переносим в Qwen / ChatGPT резюме видео ↓</div>
+<div class="panel"><h3>Шаг 3. Qwen / ChatGPT — соберите готовый урок</h3><p>Вставьте резюме из YouLearn в новый диалог, а следом отправьте промпт ниже.</p><a class="btn service-link" href="https://chat.qwen.ai/" target="_blank" rel="noopener">Открыть Qwen ↗</a><a class="btn service-link" href="https://chatgpt.com/" target="_blank" rel="noopener">Открыть ChatGPT ↗</a><div id="p2b" class="prompt"></div><div class="actions"><button class="btn" onclick="copyText('p2b')">Скопировать промпт</button></div></div>
+<div class="panel dark"><h3>Готово</h3><p>План + работа с видео + материалы ученика + ключи + проверка понимания + чек-лист.</p><button class="btn secondary" onclick="showBonus(2)">Бонус: сделать презентацию в Curipod</button></div>
+<div id="bonus2"></div>
+</section>
+
+<section id="route3" class="screen">
+<button class="btn ghost back" onclick="home()">← К маршрутам</button>
+<div class="topline"><span class="step">Маршрут 03</span></div>
+<h2>Материал → интерактивная викторина</h2>
+<div class="route"><div class="node"><b>Ваш материал</b><br>PDF / текст / презентация</div><div class="arrow">→</div><div class="node"><b>Промпт 1</b><br>содержание</div><div class="arrow">→ проверка →</div><div class="node"><b>Промпт 2</b><br>HTML</div></div>
+<div id="form3"></div>
+<div class="panel aqua"><h3>Шаг 1. Создайте содержание</h3><a class="btn service-link" href="https://chat.qwen.ai/" target="_blank" rel="noopener">Открыть Qwen ↗</a><a class="btn service-link" href="https://chatgpt.com/" target="_blank" rel="noopener">Открыть ChatGPT ↗</a><div id="p3a" class="prompt"></div><div class="actions"><button class="btn" onclick="copyText('p3a')">Скопировать промпт</button></div></div>
+<div class="panel stop"><h3>Стоп. Не создавайте игру сразу</h3><p>Проверьте содержание, сложность, однозначность и объем. Если нужно, попросите изменить конкретные вопросы. После проверки оставайтесь в том же диалоге.</p></div>
+<div class="panel"><h3>Шаг 2. Создайте HTML-код</h3><p>Останьтесь в том же диалоге. Просто скопируйте промпт ниже и отправьте его вторым шагом.</p><div id="p3b" class="prompt"></div><div class="actions"><button class="btn" onclick="copyText('p3b')">Скопировать промпт</button></div></div>
+<div class="panel dark"><h3>Готово</h3><p><b>Скачайте готовый HTML-файл.</b></p><p>Его можно открыть в любом браузере и использовать на уроке. После скачивания файл работает локально — для запуска викторины интернет не нужен.</p></div>
+</section>
+</main>
+</div>
+<script>
+const baseFields = [
+ ["subject","Предмет"],["age","Класс / возраст"],["topic","Тема"],["duration","Продолжительность, минут"],
+ ["goal","Цель (если есть)"],["known","Что ученики уже знают (если важно)"],["features","Особенности класса (если важно)"]
+];
+const data={1:{},2:{},3:{}};
+function fieldHTML(r, extra=[]){
+ let fs=[...baseFields,...extra];
+ return `<div class="panel"><h3>Мой урок</h3><div class="formgrid">${fs.map(([k,l])=>`<div><label>${l}</label><input data-r="${r}" data-k="${k}" oninput="update(${r})" placeholder="${l}"></div>`).join("")}</div><p class="small">Необязательные поля можно оставить пустыми. Паспорт сохраняется в этом браузере и автоматически подставляется во все маршруты.</p></div>`;
+}
+document.getElementById("form1").innerHTML=fieldHTML(1);
+document.getElementById("form2").innerHTML=fieldHTML(2,[["lang","Язык видео"],["maxvideo","Максимальная продолжительность видео, минут"]]);
+document.getElementById("form3").innerHTML=fieldHTML(3,[["quizgoal","Цель викторины"],["quiztime","Время на викторину, минут"]]);
+
+function passport(d){
+return `МОЙ УРОК
+
+Предмет: ${d.subject||"[ ]"}
+Класс / возраст: ${d.age||"[ ]"}
+Тема: ${d.topic||"[ ]"}
+Продолжительность: ${d.duration||"[ ]"}
+Цель: ${d.goal||"[если есть]"}
+Что ученики уже знают: ${d.known||"[если важно]"}
+Особенности класса: ${d.features||"[если важно]"}`;
+}
+function update(r){
+ document.querySelectorAll(`[data-r="${r}"]`).forEach(x=>data[r][x.dataset.k]=x.value.trim());
+ const common={};
+ baseFields.forEach(([k])=>common[k]=data[r][k]||"");
+ localStorage.setItem("lessonPassport",JSON.stringify(common));
+ [1,2,3].forEach(rr=>{
+   baseFields.forEach(([k])=>data[rr][k]=common[k]||"");
+   document.querySelectorAll(`[data-r="${rr}"]`).forEach(x=>{
+     if(baseFields.some(([k])=>k===x.dataset.k)) x.value=common[x.dataset.k]||"";
+   });
+   render(rr);
+ });
+}
+function restorePassport(){
+ try{
+   const common=JSON.parse(localStorage.getItem("lessonPassport")||"{}");
+   [1,2,3].forEach(rr=>{
+     baseFields.forEach(([k])=>data[rr][k]=common[k]||"");
+     document.querySelectorAll(`[data-r="${rr}"]`).forEach(x=>{
+       if(baseFields.some(([k])=>k===x.dataset.k)) x.value=common[x.dataset.k]||"";
+     });
+   });
+ }catch(e){}
+}
+function render(r){
+ let d=data[r], p=passport(d);
+ if(r===1){
+  set("p1a",`${p}
+
+Найди актуальные и надежные исследования, данные, статистику и реальные примеры, которые помогут раскрыть эту тему именно для моего предмета и учеников указанного возраста.
+
+Учитывай цель урока и то, что ученики уже знают.
+
+Отдавай предпочтение исследованиям и научным обзорам, официальной статистике, университетам, научным организациям и надежным институциям. Выбери 3–5 наиболее полезных источников.
+
+По каждому:
+1. Дай ссылку.
+2. Коротко объясни, что это за источник.
+3. Выдели конкретные данные, выводы или примеры для моего урока.
+4. Объясни их языком, подходящим ученикам указанного возраста.
+5. Предложи, как использовать их именно на уроке моего предмета.
+
+Отдельно отметь, какие выводы хорошо подтверждены, где позиции расходятся и какие 2–3 находки особенно полезны.
+
+Не придумывай источники, исследования, статистику или данные.`);
+  set("p1b",`Ты — опытный методист и учитель-предметник.
+
+${p}
+
+Я прикрепил(а) материалы с исследованиями и данными. Подготовь на их основе полностью готовый комплект к уроку.
+
+Сначала проанализируй предмет, возраст учеников, тему, цель, исходные знания и особенности класса.
+
+Урок должен соответствовать методике именно указанного предмета. Не используй одну универсальную структуру для всех дисциплин: виды деятельности, способы объяснения, практики и проверки подбирай так, как это уместно для этого предмета и возраста.
+
+Если без дополнительной информации нельзя спроектировать качественный урок, сначала задай мне не более 2 действительно необходимых уточняющих вопросов. Не спрашивай то, что уже указано в паспорте или прикрепленных материалах.
+
+Затем самостоятельно определи подходящую архитектуру урока и проверь, помещается ли она в указанное время.
+
+Все фактические утверждения, исследования, статистику и данные бери только из прикрепленных материалов. Методическую структуру, инструкции и задания создавай самостоятельно.
+
+ПОДГОТОВЬ:
+1. Цель урока.
+2. План учителя: время, цель этапа, действия учителя, действия учеников.
+3. Материалы ученика: все инструкции, вопросы, задания, тексты, кейсы, таблицы и карточки в готовом виде.
+4. Ключи учителя: ответы, ожидаемые ответы или критерии.
+5. Короткую проверку понимания.
+6. Чек-лист «Перед уроком»: что распечатать, открыть, показать и подготовить.
+
+Если нужного фактического материала нет в источниках, не придумывай его. Оформи материалы ученика отдельно, чтобы их было удобно скопировать в Word или распечатать.`);
+ }
+ if(r===2){
+  set("p2a",`${p}
+
+ДОПОЛНИТЕЛЬНО
+Язык видео: ${d.lang||"[ ]"}
+Максимальная продолжительность видео: ${d.maxvideo||"[ ]"} минут
+
+Найди 3 видео, которые можно использовать на этом уроке. Учитывай предмет, тему, цель, возраст, сложность, язык, продолжительность и учебную ценность.
+
+Для каждого укажи:
+1. Название.
+2. Прямую ссылку.
+3. Продолжительность.
+4. О чем видео.
+5. Почему оно подходит этим ученикам.
+6. Какую учебную функцию оно может выполнять на этом уроке.
+
+Не придумывай видео и ссылки. Предлагай только материалы, существование которых удалось подтвердить.`);
+  set("p2b",`Ты — опытный методист и учитель-предметник.
+
+${p}
+
+Выше я добавил(а) резюме видео, которое хочу использовать. Создай на его основе полностью готовый комплект к уроку.
+
+Сначала проанализируй предмет, возраст учеников, тему, цель, исходные знания и особенности класса.
+
+Урок должен соответствовать методике именно указанного предмета. Не используй одну универсальную структуру для разных дисциплин.
+
+Определи учебную функцию видео: зачем именно оно нужно в этом уроке. Не делай его центром урока только потому, что оно есть.
+
+Если без дополнительной информации нельзя спроектировать качественный урок, сначала задай мне не более 2 действительно необходимых уточняющих вопросов. Не спрашивай то, что уже указано в паспорте или резюме видео.
+
+Затем выстрой урок с учетом предмета и возраста учеников и проверь, помещается ли он в указанное время.
+
+ПОДГОТОВЬ:
+1. Цель урока.
+2. План учителя: время, цель, действия учителя и учеников.
+3. Работу с видео. Если это оправдано, продумай подготовку к просмотру, конкретную задачу во время просмотра и работу после.
+4. Материалы ученика: готовые инструкции, вопросы, задания, таблицы, листы наблюдения и карточки.
+5. Ключи учителя.
+6. Короткую проверку понимания.
+7. Чек-лист «Перед уроком».
+
+Все фактические утверждения о видео бери только из предоставленного резюме. Если информации недостаточно, не придумывай ее. Оформи материалы ученика отдельно для удобного копирования и печати.`);
+ }
+ if(r===3){
+  set("p3a",`Ты — опытный методист, учитель-предметник и разработчик учебных заданий.
+
+${p}
+
+ДОПОЛНИТЕЛЬНО
+Цель викторины: ${d.quizgoal||"[повторение / закрепление / проверка понимания / другое]"}
+Время на викторину: ${d.quiztime||"[ ]"} минут
+
+Я прикрепил(а) учебный материал.
+
+Сначала определи, что действительно важно проверить по этому материалу с учетом предмета, возраста и цели активности. Покажи этот список перед заданиями.
+
+Затем создай викторину, которая помещается в указанное время. Сам выбери подходящие типы заданий: один или несколько правильных ответов, правда/ложь, сопоставление, последовательность, применение или анализ — только там, где это оправдано.
+
+Для каждого задания дай формулировку для ученика, варианты ответа при необходимости, правильный ответ и короткую обратную связь.
+
+Используй только информацию из прикрепленного материала. Не добавляй фактов, которых в нем нет. Дистракторы должны быть правдоподобными, но однозначно неправильными.
+
+ПОКА НЕ СОЗДАВАЙ HTML. Сначала покажи содержание викторины, ответы и обратную связь.`);
+  set("p3b",`Теперь используй последнюю согласованную выше версию викторины.
+
+Ты — разработчик интерактивных образовательных HTML-материалов и UX/UI-дизайнер.
+
+Не меняй содержание заданий, правильные ответы и обратную связь, кроме исправления технической ошибки.
+
+Создай один самостоятельный HTML-файл с HTML, CSS и JavaScript внутри.
+
+ЛОГИКА:
+— стартовый экран и кнопка «Начать»;
+— одно задание на экране;
+— понятный способ дать ответ;
+— обратная связь после ответа;
+— правильный ответ и объяснение, где предусмотрено;
+— переход к следующему заданию;
+— индикатор прогресса;
+— автоматический подсчет результата;
+— итоговый экран;
+— кнопка «Пройти еще раз».
+
+Отдавай предпочтение надежным взаимодействиям через кнопки и клики. Не используй drag-and-drop, если ту же механику можно реализовать проще.
+
+ДИЗАЙН:
+современный, аккуратный, соответствующий возрасту; крупный читаемый текст, четкая иерархия, понятные кнопки, свободное пространство. Интерфейс должен работать на компьютере, планшете и телефоне.
+
+Не используй внешние библиотеки, без которых файл перестанет работать.
+
+ПЕРЕД ВЫДАЧЕЙ ПРОВЕРЬ все кнопки, ответы, переходы, подсчет баллов, финальный экран, повторное прохождение и отсутствие тупиков. Исправь найденные ошибки.
+
+В конце предоставь готовый HTML-файл, который я смогу скачать, сохранить на устройство и открыть локально в браузере без подключения к интернету.`);
+ }
+}
+function set(id,t){document.getElementById(id).textContent=t}
+function openRoute(r){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("route"+r).classList.add("active");render(r);scrollTo(0,0)}
+function home(){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("home").classList.add("active");scrollTo(0,0)}
+async function copyText(id){await navigator.clipboard.writeText(document.getElementById(id).textContent);alert("Промпт скопирован")}
+function showBonus(r){
+ let target=document.getElementById("bonus"+r);
+ target.innerHTML=`<div class="panel aqua"><h3>Бонус. Готовый урок → Curipod</h3>
+ <p><b>Curipod</b> — сервис для создания интерактивных презентаций и уроков по теме или загруженному материалу. Он помогает превратить готовое содержание в презентацию с интерактивными активностями для учеников.</p>
+<p><b>Что сделать:</b></p>
+<p>1. Откройте Curipod и зарегистрируйтесь или войдите в аккаунт.<br>
+2. На главной странице откройте раздел <b>«Главное»</b>.<br>
+3. Прокрутите страницу максимально вниз.<br>
+4. Найдите блок <b>«Генерировать урок»</b>.<br>
+5. Добавьте готовый урок в материалы.<br>
+6. Вставьте промпт ниже и запустите генерацию.</p>
+<a class="btn service-link" href="https://curipod.com/" target="_blank" rel="noopener">Открыть Curipod ↗</a>
+ <div id="curi${r}" class="prompt">На основе прикрепленного готового урока создай интерактивную презентацию.
+
+Сохрани его цель, содержание, последовательность и уровень сложности. Не перепроектируй урок заново.
+
+Преврати подходящие этапы в интерактивный формат. Используй там, где это действительно помогает обучению: вопросы, опросы, голосования, обсуждения, короткие задания и проверку понимания.
+
+Чередуй получение информации и активное участие учеников. Не добавляй активности только ради интерактивности и не перегружай ими урок.
+
+Учитывай предмет и возраст учеников, указанные в прикрепленном уроке.</div>
+ <div class="actions"><button class="btn" onclick="copyText('curi${r}')">Скопировать промпт Curipod</button></div></div>`;
+ target.scrollIntoView({behavior:"smooth"});
+}
+restorePassport();render(1);render(2);render(3);
+</script>
+</body>
+</html>
